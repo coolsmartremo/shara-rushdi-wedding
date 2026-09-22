@@ -703,6 +703,16 @@ export default function Home() {
 
             <div className="closing-ornament">✦</div>
           </section>
+
+          {/* =================================================
+              CREDIT FOOTER
+          ================================================== */}
+          <footer className="credit-footer reveal">
+            <p className="credit-text">
+              Coded by <span className="credit-name">Tuan Hijaz</span>
+            </p>
+            <p className="credit-phone">071 239 64 64</p>
+          </footer>
         </div>
       )}
     </main>

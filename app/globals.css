@@ -2197,6 +2197,44 @@ a {
 }
 
 /* =========================================================
+   CREDIT FOOTER
+   ========================================================= */
+
+.credit-footer {
+  padding: 24px 20px 32px;
+
+  text-align: center;
+
+  background: var(--ivory);
+
+  border-top: 1px solid rgba(179, 138, 74, 0.25);
+}
+
+.credit-text {
+  color: var(--soft-text);
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+}
+
+.credit-name {
+  color: var(--gold-dark);
+
+  font-weight: 600;
+}
+
+.credit-phone {
+  margin-top: 4px;
+
+  color: var(--soft-text);
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+}
+
+/* =========================================================
    SMALL MOBILE
    ========================================================= */
 

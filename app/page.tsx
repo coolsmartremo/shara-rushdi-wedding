@@ -1,0 +1,487 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const WEDDING_DATE = new Date("2026-10-25T16:00:00+05:30"); // TODO: confirm the exact wedding time
+
+function getTimeLeft() {
+  const diff = Math.max(0, WEDDING_DATE.getTime() - Date.now());
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return { days, hours, minutes, seconds };
+}
+
+function pad(n: number) {
+  return n.toString().padStart(2, "0");
+}
+
+// Fixed (non-random) petal setup so the server & client render the same thing
+const PETALS = [
+  { left: "3%", size: 11, duration: 13, delay: 0, variant: "gold" },
+  { left: "10%", size: 8, duration: 16, delay: 3, variant: "rose" },
+  { left: "18%", size: 13, duration: 11, delay: 6, variant: "ivory" },
+  { left: "26%", size: 9, duration: 15, delay: 1.5, variant: "gold" },
+  { left: "34%", size: 12, duration: 12.5, delay: 8, variant: "rose" },
+  { left: "43%", size: 8, duration: 17, delay: 4.5, variant: "ivory" },
+  { left: "52%", size: 10, duration: 14, delay: 2, variant: "gold" },
+  { left: "60%", size: 13, duration: 12, delay: 9, variant: "rose" },
+  { left: "68%", size: 9, duration: 16.5, delay: 5, variant: "ivory" },
+  { left: "76%", size: 11, duration: 13.5, delay: 0.8, variant: "gold" },
+  { left: "84%", size: 8, duration: 15.5, delay: 7, variant: "rose" },
+  { left: "91%", size: 12, duration: 11.5, delay: 3.8, variant: "ivory" },
+  { left: "97%", size: 9, duration: 14.5, delay: 6.5, variant: "gold" },
+];
+
+export default function Home() {
+  const [opened, setOpened] = useState(false);
+  const [musicOn, setMusicOn] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    setTimeLeft(getTimeLeft());
+
+    const timer = setInterval(() => {
+      setTimeLeft(getTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const startMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio
+      .play()
+      .then(() => setMusicOn(true))
+      .catch(() => setMusicOn(false)); // browser blocked autoplay, that's fine
+  };
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (musicOn) {
+      audio.pause();
+      setMusicOn(false);
+    } else {
+      startMusic();
+    }
+  };
+
+  const handleOpen = () => {
+    setOpened(true);
+    startMusic(); // this click counts as a "user gesture" so autoplay is allowed
+  };
+
+  return (
+    <main className="wedding-page">
+      {/* FALLING PETALS (decorative, sits over the whole page) */}
+      <div className="petals" aria-hidden="true">
+        {PETALS.map((p, i) => (
+          <span
+            key={i}
+            className={`petal petal--${p.variant}`}
+            style={{
+              left: p.left,
+              width: p.size,
+              height: p.size * 1.3,
+              animationDuration: `${p.duration}s`,
+              animationDelay: `${p.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* BACKGROUND MUSIC */}
+      <audio ref={audioRef} src="/wedding-music.mp3" loop preload="none" />
+
+      <button
+        type="button"
+        className={`music-toggle ${musicOn ? "is-on" : "is-off"}`}
+        onClick={toggleMusic}
+        aria-pressed={musicOn}
+        aria-label={musicOn ? "Turn music off" : "Turn music on"}
+      >
+        <span className="music-toggle-disc">♪</span>
+        <span className="music-toggle-label">{musicOn ? "ON" : "OFF"}</span>
+      </button>
+
+      {/* =====================================================
+          OPENING SCREEN
+      ====================================================== */}
+      {!opened && (
+        <section className="opening-screen">
+          {/* COUPLE PHOTO BACKGROUND */}
+          <img src="/couple-photo.jpg" alt="" className="opening-background" />
+
+          {/* SOFT IVORY OVERLAY */}
+          <div className="opening-overlay"></div>
+
+          {/* TOP DECORATION */}
+          <div className="opening-decoration top-decoration">✦</div>
+
+          {/* CONTENT */}
+          <div className="opening-content">
+            {/* ARABIC */}
+            <div className="arabic-greeting">فِي الدُّنْيَا وَالْآخِرَةِ</div>
+
+            {/* BLESSING */}
+            <div className="blessing-text">WITH THE BLESSINGS OF ALLAH</div>
+
+            {/* ORNAMENT */}
+            <div className="ornament">◇</div>
+
+            {/* COUPLE NAMES */}
+            <h1 className="opening-names">
+              Shara
+              <span>&</span>
+              Rushdi
+            </h1>
+
+            {/* GOLD DIVIDER */}
+            <div className="gold-line">
+              <span></span>
+              <i>✦</i>
+              <span></span>
+            </div>
+
+            {/* INVITATION */}
+            <p className="opening-description">
+              Together with their families
+              <br />
+              cordially invite you to celebrate their
+            </p>
+
+            {/* EVENT */}
+            <h2 className="opening-event">WEDDING</h2>
+
+            {/* OPEN BUTTON */}
+            <button className="open-button" onClick={handleOpen}>
+              <span>♡</span>
+              TAP TO OPEN
+            </button>
+          </div>
+
+          {/* BOTTOM DECORATION */}
+          <div className="opening-decoration bottom-decoration">✦</div>
+        </section>
+      )}
+
+      {/* =====================================================
+          MAIN INVITATION
+      ====================================================== */}
+      {opened && (
+        <div className="invitation-container">
+          {/* =================================================
+              HEADER
+          ================================================== */}
+          <section className="header-section">
+            <img src="/couple-photo.jpg" alt="" className="header-photo" />
+
+            <div className="header-overlay"></div>
+
+            <div className="arabic-greeting">فِي الدُّنْيَا وَالْآخِرَةِ</div>
+
+            <div className="blessing-text">WITH THE BLESSINGS OF ALLAH</div>
+
+            <div className="ornament">◇</div>
+
+            <h1 className="couple-names">
+              Shara
+              <span>&</span>
+              Rushdi
+            </h1>
+
+            <div className="gold-line">
+              <span></span>
+              <i>✦</i>
+              <span></span>
+            </div>
+
+            <p className="invite-text">
+              Together with their families
+              <br />
+              cordially invite you to celebrate their
+            </p>
+
+            <h2 className="wedding-title">WEDDING</h2>
+          </section>
+
+          {/* =================================================
+              FAMILY SECTION
+          ================================================== */}
+          <section className="family-section">
+            <div className="section-heading">
+              <span></span>
+              <h3>WITH THEIR FAMILIES</h3>
+              <span></span>
+            </div>
+
+            <div className="family-grid">
+              {/* BRIDE'S FAMILY */}
+              <div className="family-card">
+                <div className="family-icon">♡</div>
+
+                <div className="family-label">BRIDE'S FAMILY</div>
+
+                <div className="family-divider">✦</div>
+
+                <div className="parents">
+                  <p className="parent-title">Mr. T M I R Sahama</p>
+
+                  <p className="parent-title">Mrs. Fawzil Hidaya</p>
+                </div>
+              </div>
+
+              {/* GROOM'S FAMILY */}
+              <div className="family-card">
+                <div className="family-icon">♡</div>
+
+                <div className="family-label">GROOM'S FAMILY</div>
+
+                <div className="family-divider">✦</div>
+
+                <div className="parents">
+                  <p className="parent-title">Mr. T.M.H Kitchilan</p>
+
+                  <p className="parent-title">Mrs. M.S. Kitchilan</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* =================================================
+              WEDDING DRESS CODE SECTION
+          ================================================== */}
+          <section className="dress-code-section">
+            <div className="dress-code-card">
+              <div className="section-heading">
+                <span></span>
+                <h3>WEDDING DRESS CODE</h3>
+                <span></span>
+              </div>
+
+              <p className="dress-code-text">
+                We know many like to come dressed to compliment the big day.
+                Provided below is the color palette of our day. We look
+                forward to seeing you all!
+              </p>
+
+              <img
+                src="/dress-code-palette.png"
+                alt="Wedding dress code colour palette: ivory, taupe, champagne, gold and yellow gold"
+                className="dress-code-image"
+              />
+            </div>
+          </section>
+
+          {/* =================================================
+              COUNTDOWN SECTION
+          ================================================== */}
+          <section className="countdown-section">
+            <div className="section-heading">
+              <span></span>
+              <h3>COUNTING DOWN TO OUR WEDDING</h3>
+              <span></span>
+            </div>
+
+            <div className="countdown-grid">
+              <div className="countdown-card">
+                <div className="countdown-number-frame">
+                  <span key={`d-${timeLeft.days}`} className="countdown-number">
+                    {pad(timeLeft.days)}
+                  </span>
+                </div>
+                <div className="countdown-label">Days</div>
+              </div>
+
+              <div className="countdown-sep">✦</div>
+
+              <div className="countdown-card">
+                <div className="countdown-number-frame">
+                  <span key={`h-${timeLeft.hours}`} className="countdown-number">
+                    {pad(timeLeft.hours)}
+                  </span>
+                </div>
+                <div className="countdown-label">Hours</div>
+              </div>
+
+              <div className="countdown-sep">✦</div>
+
+              <div className="countdown-card">
+                <div className="countdown-number-frame">
+                  <span
+                    key={`m-${timeLeft.minutes}`}
+                    className="countdown-number"
+                  >
+                    {pad(timeLeft.minutes)}
+                  </span>
+                </div>
+                <div className="countdown-label">Minutes</div>
+              </div>
+
+              <div className="countdown-sep">✦</div>
+
+              <div className="countdown-card">
+                <div className="countdown-number-frame">
+                  <span
+                    key={`s-${timeLeft.seconds}`}
+                    className="countdown-number"
+                  >
+                    {pad(timeLeft.seconds)}
+                  </span>
+                </div>
+                <div className="countdown-label">Seconds</div>
+              </div>
+            </div>
+          </section>
+
+          {/* =================================================
+              HOTEL / VENUE SECTION
+          ================================================== */}
+          <section className="venue-section">
+            <div className="venue-card">
+              {/* TOP ORNAMENT */}
+              <div className="venue-top-decoration">✦</div>
+
+              {/* TITLE */}
+              <div className="section-heading venue-heading">
+                <span></span>
+                <h3>OUR VENUE</h3>
+                <span></span>
+              </div>
+
+              {/* HOTEL ICON */}
+              <div className="venue-icon">🏨</div>
+
+              <div className="venue-small-title">CELEBRATING AT</div>
+
+              <h2 className="venue-name">JADE GREEN</h2>
+
+              <div className="venue-location">HAMBANTOTA</div>
+
+              {/* DIVIDER */}
+              <div className="venue-divider">
+                <span></span>
+                <i>✦</i>
+                <span></span>
+              </div>
+
+              {/* DESCRIPTION */}
+              <p className="venue-description">
+                We are delighted to celebrate this
+                <br />
+                beautiful occasion at
+                <br />
+                Jade Green, Hambantota.
+              </p>
+
+              {/* HOTEL BUTTONS */}
+              <div className="venue-buttons">
+                <a
+                  href="https://www.jadegreen.lk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="venue-button"
+                >
+                  HOTEL WEBSITE
+                </a>
+
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Jade+Green+Hambantota"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="venue-button outline"
+                >
+                  GET DIRECTIONS
+                </a>
+              </div>
+
+              {/* HOTEL PHOTOS */}
+              <div className="hotel-gallery">
+                <div className="hotel-photo">
+                  <img src="/hotel-1.jpeg" alt="Jade Green Hambantota" />
+                </div>
+
+                <div className="hotel-photo">
+                  <img
+                    src="/hotel-2.jpeg"
+                    alt="Jade Green Hambantota Swimming Pool"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* =================================================
+              RSVP SECTION
+          ================================================== */}
+          <section className="rsvp-section">
+            <div className="rsvp-card">
+              <div className="rsvp-ornament">✦</div>
+
+              <div className="rsvp-title">
+                ~ WE WOULD LOVE TO HEAR FROM YOU ~
+              </div>
+
+              <p className="rsvp-text">
+                Kindly let us know if you will be joining us
+                <br className="desktop-break" />
+                for our special day.
+              </p>
+
+              <div className="rsvp-buttons">
+                {/* CALL */}
+                <a href="tel:+94710611010" className="rsvp-button call">
+                  <span>☎</span>
+                  CALL
+                </a>
+
+                {/* WHATSAPP */}
+                <a
+                  href="https://wa.me/94756001697"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rsvp-button whatsapp"
+                >
+                  <span>◉</span>
+                  WHATSAPP
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* =================================================
+              CLOSING
+          ================================================== */}
+          <section className="closing-section">
+            <div className="closing-ornament">✦</div>
+
+            <h2>A BEAUTIFUL BEGINNING</h2>
+
+            <div className="closing-line">
+              <span></span>
+              <i>♡</i>
+              <span></span>
+            </div>
+
+            <p>FOR A BLESSED JOURNEY</p>
+
+            <div className="closing-ornament">✦</div>
+          </section>
+        </div>
+      )}
+    </main>
+  );
+}

@@ -92,8 +92,6 @@ export default function Home() {
 
   // RSVP: WhatsApp number to send responses to
   const RSVP_WHATSAPP_NUMBER = "94756001697";
-  // TODO: set the couple's real email address to receive RSVP responses
-  const RSVP_EMAIL = "your-email@example.com";
 
   const rsvpReady = rsvpName.trim() !== "" && rsvpAttending !== "";
 
@@ -127,14 +125,6 @@ export default function Home() {
       `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${text}`,
       "_blank"
     );
-  }
-
-  function handleEmailRsvp() {
-    if (!rsvpReady) return;
-
-    const subject = encodeURIComponent("Wedding RSVP - Shara & Rushdi");
-    const body = encodeURIComponent(buildRsvpMessage());
-    window.location.href = `mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
   }
 
   return (
@@ -564,11 +554,6 @@ export default function Home() {
               </form>
 
               <div className="rsvp-buttons">
-                <a href="tel:+94710611010" className="rsvp-button call">
-                  <span>☎</span>
-                  CALL
-                </a>
-
                 <button
                   type="button"
                   className="rsvp-button whatsapp"
@@ -579,15 +564,10 @@ export default function Home() {
                   WHATSAPP
                 </button>
 
-                <button
-                  type="button"
-                  className="rsvp-button email"
-                  onClick={handleEmailRsvp}
-                  disabled={!rsvpReady}
-                >
-                  <span>✉</span>
-                  EMAIL
-                </button>
+                <a href="tel:+94710611010" className="rsvp-button call">
+                  <span>☎</span>
+                  CALL
+                </a>
               </div>
 
               {!rsvpReady && (

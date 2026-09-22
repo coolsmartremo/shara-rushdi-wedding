@@ -1580,8 +1580,7 @@ a {
   border: 1px solid var(--gold);
 }
 
-.rsvp-button.call,
-.rsvp-button.email {
+.rsvp-button.call {
   color: var(--gold-dark);
 
   background: transparent;

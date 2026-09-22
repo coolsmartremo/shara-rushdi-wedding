@@ -428,6 +428,13 @@ export default function Home() {
               <span className="countdown-date-value">
                 25th of October 2026
               </span>
+
+              <span className="countdown-date-label countdown-time-label">
+                Time
+              </span>
+              <span className="countdown-date-value countdown-time-value">
+                After Luhar Salah
+              </span>
             </div>
 
             <div className="section-heading reveal-line">

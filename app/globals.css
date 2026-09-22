@@ -1190,6 +1190,14 @@ a {
   letter-spacing: 1px;
 }
 
+.countdown-time-label {
+  margin-top: 10px;
+}
+
+.countdown-time-value {
+  font-size: 22px;
+}
+
 .countdown-grid {
   display: flex;
 
@@ -2093,6 +2101,10 @@ a {
 
   .countdown-date-value {
     font-size: 26px;
+  }
+
+  .countdown-time-value {
+    font-size: 18px;
   }
 
   .countdown-card {

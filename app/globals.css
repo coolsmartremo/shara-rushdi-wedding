@@ -1852,11 +1852,42 @@ a {
 .closing-section p {
   color: var(--gold-dark);
 
-  font-size: 10px;
+  font-size: 13px;
 
   font-weight: 600;
 
-  letter-spacing: 4px;
+  letter-spacing: 3px;
+}
+
+.closing-dua {
+  margin: 28px auto 6px;
+
+  max-width: 380px;
+}
+
+.closing-dua-arabic {
+  color: var(--gold-dark);
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 21px;
+
+  line-height: 2;
+
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.closing-dua-translation {
+  margin-top: 12px;
+
+  color: var(--soft-text);
+
+  font-family: "Cormorant Garamond", Georgia, serif;
+
+  font-size: 15px;
+  font-style: italic;
+
+  line-height: 1.7;
 }
 
 /* =========================================================
@@ -2097,9 +2128,19 @@ a {
   }
 
   .closing-section p {
-    font-size: 9px;
+    font-size: 11px;
 
-    letter-spacing: 3px;
+    letter-spacing: 2.5px;
+  }
+
+  .closing-dua-arabic {
+    font-size: 17px;
+
+    line-height: 1.8;
+  }
+
+  .closing-dua-translation {
+    font-size: 13px;
   }
 }
 

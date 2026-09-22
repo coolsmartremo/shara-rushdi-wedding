@@ -638,6 +638,18 @@ export default function Home() {
 
             <p>FOR A BLESSED JOURNEY</p>
 
+            <div className="closing-dua">
+              <div className="closing-dua-arabic" dir="rtl">
+                بَارَكَ اللهُ لَكُماَ وَبَارَكَ عَلَيْكُماَ وَجَمَعَ بَيْنَكُمَا
+                فِي خَيْرٍ
+              </div>
+
+              <div className="closing-dua-translation">
+                &ldquo;May Allah bless you both, shower His blessings upon
+                you, and unite you both in goodness.&rdquo;
+              </div>
+            </div>
+
             <div className="closing-ornament">✦</div>
           </section>
         </div>

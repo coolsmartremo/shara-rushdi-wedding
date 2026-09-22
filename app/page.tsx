@@ -36,6 +36,17 @@ const PETALS = [
   { left: "97%", size: 9, duration: 14.5, delay: 6.5, variant: "gold" },
 ];
 
+// Fixed (non-random) twinkling stars scattered around the couple's names
+const NAME_STARS = [
+  { top: "2%", left: "6%", size: 11, duration: 2.2, delay: 0 },
+  { top: "10%", left: "90%", size: 8, duration: 2.6, delay: 0.7 },
+  { top: "38%", left: "2%", size: 9, duration: 2.4, delay: 1.4 },
+  { top: "42%", left: "94%", size: 12, duration: 2.8, delay: 0.3 },
+  { top: "72%", left: "8%", size: 8, duration: 2.3, delay: 1.9 },
+  { top: "76%", left: "88%", size: 10, duration: 2.5, delay: 1.1 },
+  { top: "95%", left: "45%", size: 9, duration: 2.7, delay: 0.5 },
+];
+
 export default function Home() {
   const [opened, setOpened] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
@@ -225,11 +236,31 @@ export default function Home() {
             <div className="ornament">◇</div>
 
             {/* COUPLE NAMES */}
-            <h1 className="opening-names">
-              Shara
-              <span>&</span>
-              Rushdi
-            </h1>
+            <div className="name-stars-wrap">
+              <h1 className="opening-names">
+                Shara
+                <span>&</span>
+                Rushdi
+              </h1>
+
+              <div className="name-stars" aria-hidden="true">
+                {NAME_STARS.map((s, i) => (
+                  <span
+                    key={i}
+                    className="name-star"
+                    style={{
+                      top: s.top,
+                      left: s.left,
+                      fontSize: s.size,
+                      animationDuration: `${s.duration}s`,
+                      animationDelay: `${s.delay}s`,
+                    }}
+                  >
+                    ✦
+                  </span>
+                ))}
+              </div>
+            </div>
 
             {/* GOLD DIVIDER */}
             <div className="gold-line">
@@ -279,11 +310,31 @@ export default function Home() {
 
             <div className="ornament">◇</div>
 
-            <h1 className="couple-names">
-              Shara
-              <span>&</span>
-              Rushdi
-            </h1>
+            <div className="name-stars-wrap">
+              <h1 className="couple-names">
+                Shara
+                <span>&</span>
+                Rushdi
+              </h1>
+
+              <div className="name-stars" aria-hidden="true">
+                {NAME_STARS.map((s, i) => (
+                  <span
+                    key={i}
+                    className="name-star"
+                    style={{
+                      top: s.top,
+                      left: s.left,
+                      fontSize: s.size,
+                      animationDuration: `${s.duration}s`,
+                      animationDelay: `${s.delay}s`,
+                    }}
+                  >
+                    ✦
+                  </span>
+                ))}
+              </div>
+            </div>
 
             <div className="gold-line">
               <span></span>

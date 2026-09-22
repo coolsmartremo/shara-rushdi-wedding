@@ -606,6 +606,58 @@ a {
   font-size: clamp(75px, 12vw, 120px);
 }
 
+/* =========================================================
+   TWINKLING STARS AROUND THE NAMES
+   ========================================================= */
+
+.name-stars-wrap {
+  position: relative;
+}
+
+.name-stars {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+.name-star {
+  position: absolute;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.55);
+
+  opacity: 0;
+
+  animation-name: nameStarTwinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes nameStarTwinkle {
+  0%,
+  100% {
+    opacity: 0;
+
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-star {
+    display: none;
+  }
+}
+
 .opening-names span,
 .couple-names span {
   display: block;

@@ -450,7 +450,7 @@ export default function Home() {
                     {pad(timeLeft.days)}
                   </span>
                 </div>
-                <div className="countdown-label">Days</div>
+                <div className="countdown-label">Day</div>
               </div>
 
               <div className="countdown-sep">✦</div>
@@ -461,7 +461,7 @@ export default function Home() {
                     {pad(timeLeft.hours)}
                   </span>
                 </div>
-                <div className="countdown-label">Hours</div>
+                <div className="countdown-label">Hour</div>
               </div>
 
               <div className="countdown-sep">✦</div>
@@ -475,7 +475,7 @@ export default function Home() {
                     {pad(timeLeft.minutes)}
                   </span>
                 </div>
-                <div className="countdown-label">Minutes</div>
+                <div className="countdown-label">Min</div>
               </div>
 
               <div className="countdown-sep">✦</div>
@@ -489,7 +489,7 @@ export default function Home() {
                     {pad(timeLeft.seconds)}
                   </span>
                 </div>
-                <div className="countdown-label">Seconds</div>
+                <div className="countdown-label">Sec</div>
               </div>
             </div>
           </section>

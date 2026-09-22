@@ -148,7 +148,7 @@ export default function Home() {
       rsvpAttending === "yes"
         ? "Yes, I'll be there"
         : rsvpAttending === "no"
-        ? "Sorry, can't attend"
+        ? "Sorry, I won't be able to come"
         : "-";
 
     const lines = [
@@ -626,7 +626,7 @@ export default function Home() {
                       }`}
                       onClick={() => setRsvpAttending("no")}
                     >
-                      {"✦ Sorry, can't attend"}
+                      {"✦ Sorry, I won't be able to come"}
                     </button>
                   </div>
                 </div>

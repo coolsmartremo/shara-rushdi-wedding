@@ -423,6 +423,13 @@ export default function Home() {
               COUNTDOWN SECTION
           ================================================== */}
           <section className="countdown-section reveal">
+            <div className="countdown-date">
+              <span className="countdown-date-label">Wedding Date</span>
+              <span className="countdown-date-value">
+                25th of October 2026
+              </span>
+            </div>
+
             <div className="section-heading reveal-line">
               <span></span>
               <h3>COUNTING DOWN TO OUR WEDDING</h3>

@@ -564,6 +564,11 @@ export default function Home() {
               </form>
 
               <div className="rsvp-buttons">
+                <a href="tel:+94710611010" className="rsvp-button call">
+                  <span>☎</span>
+                  CALL
+                </a>
+
                 <button
                   type="button"
                   className="rsvp-button whatsapp"

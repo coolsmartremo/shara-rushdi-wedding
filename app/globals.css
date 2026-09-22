@@ -234,6 +234,150 @@ a {
 }
 
 /* =========================================================
+   KEN BURNS PHOTO ZOOM
+   ========================================================= */
+
+@keyframes kenBurnsOpening {
+  0% {
+    transform: scale(1.05) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.16) translate(-1.5%, -1.5%);
+  }
+}
+
+@keyframes kenBurnsHeader {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate(1.5%, -1.5%);
+  }
+}
+
+/* =========================================================
+   SCROLL REVEAL (sections + gold divider lines)
+   ========================================================= */
+
+.reveal {
+  opacity: 0;
+
+  transform: translateY(30px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+.reveal-line span {
+  transform: scaleX(0);
+
+  transition: transform 0.9s ease 0.15s;
+}
+
+.reveal-line span:first-child {
+  transform-origin: right center;
+}
+
+.reveal-line span:last-child {
+  transform-origin: left center;
+}
+
+.reveal-line.is-visible span {
+  transform: scaleX(1);
+}
+
+/* =========================================================
+   SPARKLE / TWINKLE ORNAMENTS
+   ========================================================= */
+
+@keyframes sparkleTwinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+
+    transform: scale(1.1);
+  }
+}
+
+.ornament,
+.family-divider,
+.venue-top-decoration,
+.rsvp-ornament,
+.closing-ornament,
+.gold-line i,
+.venue-divider i,
+.closing-line i {
+  display: inline-block;
+
+  animation: sparkleTwinkle 2.6s ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkleCentered {
+  0%,
+  100% {
+    opacity: 0.55;
+
+    transform: translateX(-50%) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+.top-decoration,
+.bottom-decoration {
+  animation: sparkleTwinkleCentered 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-background,
+  .header-photo,
+  .ornament,
+  .family-divider,
+  .venue-top-decoration,
+  .rsvp-ornament,
+  .closing-ornament,
+  .gold-line i,
+  .venue-divider i,
+  .closing-line i,
+  .top-decoration,
+  .bottom-decoration {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal-line span {
+    opacity: 1;
+
+    transform: none;
+
+    transition: none;
+  }
+
+  .invitation-container {
+    animation: none;
+  }
+
+  .opening-screen {
+    transition: none;
+  }
+}
+
+/* =========================================================
    MAIN PAGE
    ========================================================= */
 
@@ -276,6 +420,18 @@ a {
   overflow: hidden;
 
   background: var(--ivory);
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.opening-screen.is-closing {
+  opacity: 0;
+
+  transform: scale(1.03);
+
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -296,7 +452,7 @@ a {
 
   filter: blur(3px);
 
-  transform: scale(1.03);
+  animation: kenBurnsOpening 24s ease-in-out infinite alternate;
 
   z-index: 0;
 
@@ -618,6 +774,21 @@ a {
   background: var(--ivory);
 
   box-shadow: 0 0 60px rgba(59, 48, 39, 0.08);
+
+  animation: invitationFadeIn 0.9s ease both;
+}
+
+@keyframes invitationFadeIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
 }
 
 /* =========================================================
@@ -653,6 +824,8 @@ a {
   object-position: center 30%;
 
   z-index: 0;
+
+  animation: kenBurnsHeader 20s ease-in-out infinite alternate;
 }
 
 .header-overlay {
@@ -1719,8 +1892,6 @@ a {
     object-position: center center;
 
     filter: blur(3px);
-
-    transform: scale(1.05);
   }
 
   .opening-overlay {

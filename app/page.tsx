@@ -38,6 +38,7 @@ const PETALS = [
 
 export default function Home() {
   const [opened, setOpened] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [timeLeft, setTimeLeft] = useState({
@@ -63,6 +64,30 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
+  // Reveal sections (and their gold divider lines) as they scroll into view
+  useEffect(() => {
+    if (!opened) return;
+
+    const targets = document.querySelectorAll(".reveal, .reveal-line");
+    if (targets.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [opened]);
+
   const startMusic = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -86,8 +111,20 @@ export default function Home() {
   };
 
   const handleOpen = () => {
-    setOpened(true);
+    if (transitioning) return;
+
+    setTransitioning(true);
     startMusic(); // this click counts as a "user gesture" so autoplay is allowed
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // let the opening screen fade out smoothly before swapping content
+    window.setTimeout(
+      () => setOpened(true),
+      prefersReducedMotion ? 0 : 650
+    );
   };
 
   // RSVP: WhatsApp number to send responses to
@@ -164,7 +201,9 @@ export default function Home() {
           OPENING SCREEN
       ====================================================== */}
       {!opened && (
-        <section className="opening-screen">
+        <section
+          className={`opening-screen ${transitioning ? "is-closing" : ""}`}
+        >
           {/* COUPLE PHOTO BACKGROUND */}
           <img src="/opening-photo.jpg" alt="" className="opening-background" />
 
@@ -264,8 +303,8 @@ export default function Home() {
           {/* =================================================
               FAMILY SECTION
           ================================================== */}
-          <section className="family-section">
-            <div className="section-heading">
+          <section className="family-section reveal">
+            <div className="section-heading reveal-line">
               <span></span>
               <h3>WITH THEIR FAMILIES</h3>
               <span></span>
@@ -307,9 +346,9 @@ export default function Home() {
           {/* =================================================
               WEDDING DRESS CODE SECTION
           ================================================== */}
-          <section className="dress-code-section">
+          <section className="dress-code-section reveal">
             <div className="dress-code-card">
-              <div className="section-heading">
+              <div className="section-heading reveal-line">
                 <span></span>
                 <h3>WEDDING DRESS CODE</h3>
                 <span></span>
@@ -332,8 +371,8 @@ export default function Home() {
           {/* =================================================
               COUNTDOWN SECTION
           ================================================== */}
-          <section className="countdown-section">
-            <div className="section-heading">
+          <section className="countdown-section reveal">
+            <div className="section-heading reveal-line">
               <span></span>
               <h3>COUNTING DOWN TO OUR WEDDING</h3>
               <span></span>
@@ -393,13 +432,13 @@ export default function Home() {
           {/* =================================================
               HOTEL / VENUE SECTION
           ================================================== */}
-          <section className="venue-section">
+          <section className="venue-section reveal">
             <div className="venue-card">
               {/* TOP ORNAMENT */}
               <div className="venue-top-decoration">✦</div>
 
               {/* TITLE */}
-              <div className="section-heading venue-heading">
+              <div className="section-heading venue-heading reveal-line">
                 <span></span>
                 <h3>OUR VENUE</h3>
                 <span></span>
@@ -415,7 +454,7 @@ export default function Home() {
               <div className="venue-location">HAMBANTOTA</div>
 
               {/* DIVIDER */}
-              <div className="venue-divider">
+              <div className="venue-divider reveal-line">
                 <span></span>
                 <i>✦</i>
                 <span></span>
@@ -470,7 +509,7 @@ export default function Home() {
           {/* =================================================
               RSVP SECTION
           ================================================== */}
-          <section className="rsvp-section">
+          <section className="rsvp-section reveal">
             <div className="rsvp-card">
               <div className="rsvp-ornament">✦</div>
 
@@ -586,12 +625,12 @@ export default function Home() {
           {/* =================================================
               CLOSING
           ================================================== */}
-          <section className="closing-section">
+          <section className="closing-section reveal">
             <div className="closing-ornament">✦</div>
 
             <h2>A BEAUTIFUL BEGINNING</h2>
 
-            <div className="closing-line">
+            <div className="closing-line reveal-line">
               <span></span>
               <i>♡</i>
               <span></span>

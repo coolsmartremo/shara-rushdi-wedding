@@ -371,7 +371,7 @@ export default function Home() {
                 <div className="family-divider">✦</div>
 
                 <div className="parents">
-                  <p className="parent-title">Mr. T M I R Sahama</p>
+                  <p className="parent-title">Mr. T.M.I.R Sahama</p>
 
                   <p className="parent-title">Mrs. Fawzil Hidaya</p>
                 </div>

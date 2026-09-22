@@ -1204,7 +1204,7 @@ a {
   align-items: center;
   justify-content: center;
 
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   gap: 14px;
 
@@ -2096,7 +2096,7 @@ a {
   /* COUNTDOWN */
 
   .countdown-section {
-    padding: 55px 16px 60px;
+    padding: 55px 14px 60px;
   }
 
   .countdown-date-value {
@@ -2108,17 +2108,21 @@ a {
   }
 
   .countdown-card {
-    width: 64px;
+    width: 60px;
 
-    padding: 14px 4px 12px;
+    padding: 13px 3px 11px;
   }
 
   .countdown-number {
-    font-size: 26px;
+    font-size: 24px;
+  }
+
+  .countdown-sep {
+    font-size: 12px;
   }
 
   .countdown-grid {
-    gap: 8px;
+    gap: 6px;
   }
 
   .family-card {
@@ -2291,24 +2295,40 @@ a {
    ========================================================= */
 
 @media (max-width: 380px) {
-  .countdown-card {
-    width: 54px;
+  .countdown-section {
+    padding: 50px 12px 55px;
+  }
 
-    padding: 12px 3px 10px;
+  .countdown-date-value {
+    font-size: 22px;
+  }
+
+  .countdown-time-value {
+    font-size: 16px;
+  }
+
+  .countdown-card {
+    width: 48px;
+
+    padding: 10px 2px 8px;
   }
 
   .countdown-number {
-    font-size: 21px;
+    font-size: 18px;
   }
 
   .countdown-label {
-    font-size: 9px;
+    font-size: 8px;
 
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+  }
+
+  .countdown-sep {
+    font-size: 11px;
   }
 
   .countdown-grid {
-    gap: 5px;
+    gap: 4px;
   }
 
   .opening-names,

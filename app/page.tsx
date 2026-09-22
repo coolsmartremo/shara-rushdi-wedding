@@ -47,6 +47,12 @@ export default function Home() {
     seconds: 0,
   });
 
+  // RSVP form
+  const [rsvpName, setRsvpName] = useState("");
+  const [rsvpGuests, setRsvpGuests] = useState("");
+  const [rsvpAttending, setRsvpAttending] = useState<"yes" | "no" | "">("");
+  const [rsvpMessage, setRsvpMessage] = useState("");
+
   useEffect(() => {
     setTimeLeft(getTimeLeft());
 
@@ -83,6 +89,53 @@ export default function Home() {
     setOpened(true);
     startMusic(); // this click counts as a "user gesture" so autoplay is allowed
   };
+
+  // RSVP: WhatsApp number to send responses to
+  const RSVP_WHATSAPP_NUMBER = "94756001697";
+  // TODO: set the couple's real email address to receive RSVP responses
+  const RSVP_EMAIL = "your-email@example.com";
+
+  const rsvpReady = rsvpName.trim() !== "" && rsvpAttending !== "";
+
+  function buildRsvpMessage() {
+    const attendingText =
+      rsvpAttending === "yes"
+        ? "Yes, I'll be there"
+        : rsvpAttending === "no"
+        ? "Sorry, can't attend"
+        : "-";
+
+    const lines = [
+      "Wedding RSVP - Shara & Rushdi",
+      `Name: ${rsvpName.trim()}`,
+      `Number of Guests: ${rsvpGuests || "-"}`,
+      `Attending: ${attendingText}`,
+    ];
+
+    if (rsvpMessage.trim()) {
+      lines.push(`Message: ${rsvpMessage.trim()}`);
+    }
+
+    return lines.join("\n");
+  }
+
+  function handleWhatsappRsvp() {
+    if (!rsvpReady) return;
+
+    const text = encodeURIComponent(buildRsvpMessage());
+    window.open(
+      `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${text}`,
+      "_blank"
+    );
+  }
+
+  function handleEmailRsvp() {
+    if (!rsvpReady) return;
+
+    const subject = encodeURIComponent("Wedding RSVP - Shara & Rushdi");
+    const body = encodeURIComponent(buildRsvpMessage());
+    window.location.href = `mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
+  }
 
   return (
     <main className="wedding-page">
@@ -123,7 +176,7 @@ export default function Home() {
       {!opened && (
         <section className="opening-screen">
           {/* COUPLE PHOTO BACKGROUND */}
-          <img src="/couple-photo.jpg" alt="" className="opening-background" />
+          <img src="/opening-photo.jpg" alt="" className="opening-background" />
 
           {/* SOFT IVORY OVERLAY */}
           <div className="opening-overlay"></div>
@@ -187,7 +240,7 @@ export default function Home() {
               HEADER
           ================================================== */}
           <section className="header-section">
-            <img src="/couple-photo.jpg" alt="" className="header-photo" />
+            <img src="/header-photo.jpg" alt="" className="header-photo" />
 
             <div className="header-overlay"></div>
 
@@ -441,24 +494,107 @@ export default function Home() {
                 for our special day.
               </p>
 
-              <div className="rsvp-buttons">
-                {/* CALL */}
-                <a href="tel:+94710611010" className="rsvp-button call">
-                  <span>☎</span>
-                  CALL
-                </a>
+              <form
+                className="rsvp-form"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <label className="rsvp-field">
+                  <span className="rsvp-label">Your Name</span>
+                  <input
+                    type="text"
+                    className="rsvp-input"
+                    placeholder="Enter your name"
+                    value={rsvpName}
+                    onChange={(e) => setRsvpName(e.target.value)}
+                  />
+                </label>
 
-                {/* WHATSAPP */}
-                <a
-                  href="https://wa.me/94756001697"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <label className="rsvp-field">
+                  <span className="rsvp-label">Number of Guests</span>
+                  <select
+                    className="rsvp-input rsvp-select"
+                    value={rsvpGuests}
+                    onChange={(e) => setRsvpGuests(e.target.value)}
+                  >
+                    <option value="">Select number of guests</option>
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                    <option value="10+">10+</option>
+                  </select>
+                </label>
+
+                <div className="rsvp-field">
+                  <span className="rsvp-label">Will You Be Joining Us?</span>
+                  <div className="rsvp-attend-buttons">
+                    <button
+                      type="button"
+                      className={`rsvp-attend-button ${
+                        rsvpAttending === "yes" ? "is-active" : ""
+                      }`}
+                      onClick={() => setRsvpAttending("yes")}
+                    >
+                      {"♥ Yes, I'll be there"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`rsvp-attend-button ${
+                        rsvpAttending === "no" ? "is-active" : ""
+                      }`}
+                      onClick={() => setRsvpAttending("no")}
+                    >
+                      {"✦ Sorry, can't attend"}
+                    </button>
+                  </div>
+                </div>
+
+                <label className="rsvp-field">
+                  <span className="rsvp-label">Message / Comment</span>
+                  <textarea
+                    className="rsvp-input rsvp-textarea"
+                    placeholder="Leave us a little message..."
+                    rows={4}
+                    value={rsvpMessage}
+                    onChange={(e) => setRsvpMessage(e.target.value)}
+                  />
+                </label>
+              </form>
+
+              <div className="rsvp-buttons">
+                <button
+                  type="button"
                   className="rsvp-button whatsapp"
+                  onClick={handleWhatsappRsvp}
+                  disabled={!rsvpReady}
                 >
-                  <span>◉</span>
+                  <span>♡</span>
                   WHATSAPP
-                </a>
+                </button>
+
+                <button
+                  type="button"
+                  className="rsvp-button email"
+                  onClick={handleEmailRsvp}
+                  disabled={!rsvpReady}
+                >
+                  <span>✉</span>
+                  EMAIL
+                </button>
               </div>
+
+              {!rsvpReady && (
+                <p className="rsvp-hint">
+                  Please enter your name and let us know if you&apos;ll be
+                  joining, to enable sending.
+                </p>
+              )}
+
+              <p className="rsvp-note">
+                Your response will be sent directly to us.
+              </p>
             </div>
           </section>
 

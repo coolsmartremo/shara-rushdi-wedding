@@ -91,7 +91,7 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
     );
 
     targets.forEach((el) => observer.observe(el));
@@ -132,10 +132,7 @@ export default function Home() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // let the opening screen fade out smoothly before swapping content
-    window.setTimeout(
-      () => setOpened(true),
-      prefersReducedMotion ? 0 : 650
-    );
+    window.setTimeout(() => setOpened(true), prefersReducedMotion ? 0 : 650);
   };
 
   // RSVP: WhatsApp number to send responses to
@@ -148,8 +145,8 @@ export default function Home() {
       rsvpAttending === "yes"
         ? "Yes, I'll be there"
         : rsvpAttending === "no"
-        ? "Sorry, I won't be able to come"
-        : "-";
+          ? "Sorry, I won't be able to come"
+          : "-";
 
     const lines = [
       "Wedding RSVP - Shara & Rushdi",
@@ -169,10 +166,7 @@ export default function Home() {
     if (!rsvpReady) return;
 
     const text = encodeURIComponent(buildRsvpMessage());
-    window.open(
-      `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${text}`,
-      "_blank"
-    );
+    window.open(`https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${text}`, "_blank");
   }
 
   return (
@@ -407,8 +401,8 @@ export default function Home() {
 
               <p className="dress-code-text">
                 We know many like to come dressed to compliment the big day.
-                Provided below is the color palette of our day. We look
-                forward to seeing you all!
+                Provided below is the color palette of our day. We look forward
+                to seeing you all!
               </p>
 
               <img
@@ -425,9 +419,7 @@ export default function Home() {
           <section className="countdown-section reveal">
             <div className="countdown-date">
               <span className="countdown-date-label">Wedding Date</span>
-              <span className="countdown-date-value">
-                25th of October 2026
-              </span>
+              <span className="countdown-date-value">25th of October 2026</span>
 
               <span className="countdown-date-label countdown-time-label">
                 Time
@@ -457,7 +449,10 @@ export default function Home() {
 
               <div className="countdown-card">
                 <div className="countdown-number-frame">
-                  <span key={`h-${timeLeft.hours}`} className="countdown-number">
+                  <span
+                    key={`h-${timeLeft.hours}`}
+                    className="countdown-number"
+                  >
                     {pad(timeLeft.hours)}
                   </span>
                 </div>
@@ -588,10 +583,7 @@ export default function Home() {
                 for our special day.
               </p>
 
-              <form
-                className="rsvp-form"
-                onSubmit={(e) => e.preventDefault()}
-              >
+              <form className="rsvp-form" onSubmit={(e) => e.preventDefault()}>
                 <label className="rsvp-field">
                   <span className="rsvp-label">Your Name</span>
                   <input
@@ -710,8 +702,8 @@ export default function Home() {
               </div>
 
               <div className="closing-dua-translation">
-                &ldquo;May Allah bless you both, shower His blessings upon
-                you, and unite you both in goodness.&rdquo;
+                &ldquo;May Allah bless you both, shower His blessings upon you,
+                and unite you both in goodness.&rdquo;
               </div>
             </div>
 

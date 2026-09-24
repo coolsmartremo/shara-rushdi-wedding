@@ -290,7 +290,7 @@ export default function Home() {
             <div className="arabic-greeting">فِي الدُّنْيَا وَالْآخِرَةِ</div>
 
             {/* BLESSING */}
-            <div className="blessing-text">WITH THE BLESSINGS OF ALLAH</div>
+            <div className="blessing-text">&ldquo;In this world and the Hereafter&rdquo;</div>
 
             {/* ORNAMENT */}
             <div className="ornament">◇</div>
@@ -386,7 +386,7 @@ export default function Home() {
 
             <div className="arabic-greeting">فِي الدُّنْيَا وَالْآخِرَةِ</div>
 
-            <div className="blessing-text">WITH THE BLESSINGS OF ALLAH</div>
+            <div className="blessing-text">&ldquo;In this world and the Hereafter&rdquo;</div>
 
             <div className="ornament">◇</div>
 

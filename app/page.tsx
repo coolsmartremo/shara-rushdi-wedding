@@ -578,9 +578,9 @@ export default function Home() {
               </div>
 
               <p className="rsvp-text">
-                Kindly let us know if you will be joining us
+                Kindly let us know if you will be joining us for
                 <br className="desktop-break" />
-                for our special day.
+                our special day.
               </p>
 
               <form className="rsvp-form" onSubmit={(e) => e.preventDefault()}>

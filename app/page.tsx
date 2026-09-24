@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+} from "react";
 
 const WEDDING_DATE = new Date("2026-10-25T16:00:00+05:30"); // TODO: confirm the exact wedding time
 
@@ -47,9 +53,24 @@ const NAME_STARS = [
   { top: "95%", left: "45%", size: 9, duration: 2.7, delay: 0.5 },
 ];
 
+// Fixed points around a circle for the tap-to-open particle burst
+const PARTICLE_BURST = [
+  { dx: 60, dy: 0 },
+  { dx: 48, dy: 35 },
+  { dx: 19, dy: 57 },
+  { dx: -19, dy: 57 },
+  { dx: -48, dy: 35 },
+  { dx: -60, dy: 0 },
+  { dx: -48, dy: -35 },
+  { dx: -19, dy: -57 },
+  { dx: 19, dy: -57 },
+  { dx: 48, dy: -35 },
+];
+
 export default function Home() {
   const [opened, setOpened] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [burst, setBurst] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [timeLeft, setTimeLeft] = useState({
@@ -146,6 +167,7 @@ export default function Home() {
     if (transitioning) return;
 
     setTransitioning(true);
+    setBurst(true);
     startMusic(); // this click counts as a "user gesture" so autoplay is allowed
 
     const prefersReducedMotion =
@@ -194,6 +216,23 @@ export default function Home() {
       `https://wa.me/${RSVP_WHATSAPP_NUMBER}?text=${text}`,
       "_blank"
     );
+  }
+
+  // Small circular ripple that spreads out from wherever the button was tapped
+  function handleRipple(e: MouseEvent<HTMLElement>) {
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+
+    const ripple = document.createElement("span");
+    ripple.className = "button-ripple";
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+    ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
+    target.appendChild(ripple);
+    window.setTimeout(() => ripple.remove(), 650);
   }
 
   return (
@@ -301,10 +340,30 @@ export default function Home() {
             <h2 className="opening-event">WEDDING</h2>
 
             {/* OPEN BUTTON */}
-            <button className="open-button" onClick={handleOpen}>
-              <span>♡</span>
-              TAP TO OPEN
-            </button>
+            <div className="open-button-wrap">
+              <button className="open-button" onClick={handleOpen}>
+                <span>♡</span>
+                TAP TO OPEN
+              </button>
+
+              <div
+                className={`particle-burst ${burst ? "is-bursting" : ""}`}
+                aria-hidden="true"
+              >
+                {PARTICLE_BURST.map((p, i) => (
+                  <span
+                    key={i}
+                    className="particle-burst-dot"
+                    style={
+                      {
+                        "--dx": `${p.dx}px`,
+                        "--dy": `${p.dy}px`,
+                      } as CSSProperties
+                    }
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* BOTTOM DECORATION */}
@@ -681,14 +740,21 @@ export default function Home() {
                 <button
                   type="button"
                   className="rsvp-button whatsapp"
-                  onClick={handleWhatsappRsvp}
+                  onClick={(e) => {
+                    handleRipple(e);
+                    handleWhatsappRsvp();
+                  }}
                   disabled={!rsvpReady}
                 >
                   <span>♡</span>
                   WHATSAPP
                 </button>
 
-                <a href="tel:+94710611010" className="rsvp-button call">
+                <a
+                  href="tel:+94710611010"
+                  className="rsvp-button call"
+                  onClick={handleRipple}
+                >
                   <span>☎</span>
                   CALL
                 </a>

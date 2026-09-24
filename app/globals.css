@@ -614,6 +614,42 @@ a {
   position: relative;
 }
 
+.name-stars-wrap::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(255, 235, 180, 0.6) 50%,
+    transparent 60%
+  );
+
+  background-size: 250% 100%;
+
+  background-position: -120% 0;
+
+  mix-blend-mode: overlay;
+
+  pointer-events: none;
+
+  animation: goldGlowSweep 6s ease-in-out infinite;
+}
+
+@keyframes goldGlowSweep {
+  0%,
+  35% {
+    background-position: -120% 0;
+  }
+  65%,
+  100% {
+    background-position: 120% 0;
+  }
+}
+
 .name-stars {
   position: absolute;
 
@@ -761,6 +797,64 @@ a {
 /* =========================================================
    OPEN BUTTON
    ========================================================= */
+
+.open-button-wrap {
+  position: relative;
+
+  display: inline-block;
+}
+
+.particle-burst {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 5;
+}
+
+.particle-burst-dot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(circle, #fff8e6, var(--gold));
+
+  opacity: 0;
+
+  transform: translate(-50%, -50%) scale(0.4);
+}
+
+.particle-burst.is-bursting .particle-burst-dot {
+  animation: particleBurst 0.8s ease-out forwards;
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+
+    transform: translate(
+        calc(-50% + var(--dx)),
+        calc(-50% + var(--dy))
+      )
+      scale(1);
+  }
+}
 
 .open-button {
   margin-top: 38px;
@@ -1353,6 +1447,8 @@ a {
 
   position: relative;
 
+  overflow: hidden;
+
   text-align: center;
 
   background: rgba(245, 243, 230, 0.94);
@@ -1360,6 +1456,42 @@ a {
   border: 1px solid rgba(142, 105, 55, 0.5);
 
   box-shadow: 0 18px 45px rgba(59, 48, 39, 0.14);
+}
+
+.venue-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: -60%;
+  left: -60%;
+
+  width: 45%;
+  height: 220%;
+
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+
+  transform: rotate(12deg);
+
+  pointer-events: none;
+
+  animation: lightSweep 7s ease-in-out infinite;
+}
+
+@keyframes lightSweep {
+  0%,
+  30% {
+    left: -60%;
+  }
+  60%,
+  100% {
+    left: 140%;
+  }
 }
 
 /* =========================================================
@@ -1508,6 +1640,10 @@ a {
 
   padding: 12px 20px;
 
+  position: relative;
+
+  overflow: hidden;
+
   border: 1px solid var(--gold);
 
   background: linear-gradient(135deg, var(--gold), var(--yellow-gold));
@@ -1523,6 +1659,42 @@ a {
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+.venue-button::after {
+  content: "";
+
+  position: absolute;
+
+  top: -60%;
+  left: -75%;
+
+  width: 40%;
+  height: 220%;
+
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+
+  transform: rotate(12deg);
+
+  pointer-events: none;
+
+  animation: buttonShine 4.5s ease-in-out infinite;
+}
+
+@keyframes buttonShine {
+  0%,
+  35% {
+    left: -75%;
+  }
+  65%,
+  100% {
+    left: 135%;
+  }
 }
 
 .venue-button:hover {
@@ -1822,6 +1994,10 @@ a {
 
   padding: 13px 24px;
 
+  position: relative;
+
+  overflow: hidden;
+
   border: none;
 
   border-radius: 30px;
@@ -1839,6 +2015,30 @@ a {
     transform 0.2s ease,
     box-shadow 0.2s ease,
     opacity 0.2s ease;
+}
+
+.button-ripple {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  transform: scale(0);
+
+  opacity: 1;
+
+  pointer-events: none;
+
+  animation: rippleExpand 0.6s ease-out forwards;
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(2.4);
+
+    opacity: 0;
+  }
 }
 
 .rsvp-button.whatsapp {
@@ -2288,6 +2488,26 @@ a {
   font-size: 11px;
 
   letter-spacing: 1px;
+}
+
+/* =========================================================
+   REDUCED MOTION (new interactive animations)
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .particle-burst-dot {
+    display: none;
+  }
+
+  .name-stars-wrap::after,
+  .venue-card::after,
+  .venue-button::after {
+    display: none;
+  }
+
+  .button-ripple {
+    display: none;
+  }
 }
 
 /* =========================================================

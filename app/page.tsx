@@ -647,6 +647,20 @@ export default function Home() {
                     alt="Jade Green Hambantota Swimming Pool"
                   />
                 </div>
+
+                <div className="hotel-photo">
+                  <img
+                    src="/hotel-3.jpeg"
+                    alt="Jade Green Hambantota Restaurant"
+                  />
+                </div>
+
+                <div className="hotel-photo">
+                  <img
+                    src="/hotel-4.jpeg"
+                    alt="Jade Green Hambantota Wedding Deck"
+                  />
+                </div>
               </div>
             </div>
           </section>
